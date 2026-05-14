@@ -33,6 +33,7 @@ static FOCUSED_EDITOR_ID: AtomicU64 = AtomicU64::new(0);
 
 // Re-export submodules
 mod canvas_impl;
+pub(crate) use canvas_impl::set_syntax_set;
 mod clipboard;
 pub mod command;
 mod cursor;

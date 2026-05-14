@@ -215,6 +215,33 @@ pub use canvas_editor::{
 pub use i18n::{Language, Translations};
 pub use theme::{Catalog, Style, StyleFn, from_iced_theme};
 
+pub use syntect::parsing::{SyntaxDefinition, SyntaxSet, SyntaxSetBuilder};
+
+/// Sets a custom [`SyntaxSet`] for syntax highlighting in all [`CodeEditor`] instances.
+///
+/// Must be called **before** any [`CodeEditor`] is drawn for the first time.
+/// Returns `true` if successfully set, `false` if the syntax set was already
+/// initialized (i.e. an editor has already rendered).
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use iced_code_editor::{SyntaxDefinition, SyntaxSet, set_syntax_set};
+///
+/// let wren = SyntaxDefinition::load_from_str(
+///     include_str!("wren.sublime-syntax"),
+///     true,
+///     Some("wren"),
+/// ).expect("valid Wren grammar");
+///
+/// let mut builder = SyntaxSet::load_defaults_newlines().into_builder();
+/// builder.add(wren);
+/// set_syntax_set(builder.build());
+/// ```
+pub fn set_syntax_set(syntax_set: SyntaxSet) -> bool {
+    canvas_editor::set_syntax_set(syntax_set)
+}
+
 #[cfg(all(feature = "lsp-process", not(target_arch = "wasm32")))]
 pub use canvas_editor::lsp_process::{LspEvent, LspProcessClient};
 

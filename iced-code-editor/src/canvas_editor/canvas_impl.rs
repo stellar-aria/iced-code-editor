@@ -90,6 +90,13 @@ use iced::widget::canvas::Action;
 static SYNTAX_SET: OnceLock<SyntaxSet> = OnceLock::new();
 static THEME_SET: OnceLock<ThemeSet> = OnceLock::new();
 
+/// Attempts to set a custom [`SyntaxSet`] before the first draw.
+///
+/// Returns `true` if successfully set, `false` if already initialized.
+pub(crate) fn set_syntax_set(syntax_set: SyntaxSet) -> bool {
+    SYNTAX_SET.set(syntax_set).is_ok()
+}
+
 /// Context for canvas rendering operations.
 ///
 /// This struct packages commonly used rendering parameters to reduce

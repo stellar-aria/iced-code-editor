@@ -794,6 +794,15 @@ impl CodeEditor {
     /// A `Task<Message>` (currently Task::none() as no scrolling is needed)
     fn handle_mouse_release_msg(&mut self) -> Task<Message> {
         self.is_dragging = false;
+        // Clear the anchor on every cursor whose anchor equals its position —
+        // that means no drag occurred and the click produced only a caret move,
+        // not a real selection.  Leaving a zero-width anchor would cause the
+        // next typed character to appear "selected" visually.
+        for cursor in self.cursors.as_mut_slice() {
+            if cursor.anchor == Some(cursor.position) {
+                cursor.anchor = None;
+            }
+        }
         Task::none()
     }
 
